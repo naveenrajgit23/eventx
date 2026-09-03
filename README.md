@@ -14,6 +14,7 @@ EVENTX is a responsive, multi-page competition platform for Robo Race and Drone 
    - `supabase functions deploy register-team`
    - `supabase functions deploy participant-login`
    - `supabase functions deploy coordinator-login`
+   - `supabase functions deploy coordinator-register`
 5. Run `npm run dev` and open the URL shown by Vite.
 
 The service-role key is used only inside Supabase Edge Functions through the platform-provided secret. Never place it in `.env` or browser code.
@@ -24,7 +25,7 @@ Time input uses `minutes.seconds`, not decimal minutes: `3.56` means 3 minutes 5
 
 ## Security model
 
-- Coordinators use Supabase Auth and can manage only events they own.
+- Coordinators register with username, name, and password. A hidden synthetic email is generated only inside the Edge Function because Supabase Auth requires an internal identifier; it is never requested from or displayed to the coordinator.
 - Participant accounts are created server-side. Team IDs are bcrypt-hashed and verified in an Edge Function, which then returns a standard Supabase session.
 - Browser users cannot insert, update, or delete scores directly. The `save_score` function validates event, team, round, rule, and qualification membership before calculating the authoritative result.
 - Database triggers reject score and detail updates/deletes after a result is announced, even when called outside the UI.
