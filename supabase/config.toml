@@ -1,0 +1,8 @@
+[functions.register-team]
+verify_jwt = false
+
+[functions.participant-login]
+verify_jwt = false
+
+[functions.coordinator-login]
+verify_jwt = false

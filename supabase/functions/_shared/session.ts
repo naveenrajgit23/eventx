@@ -1,0 +1,3 @@
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2'
+export const admin=()=>createClient(Deno.env.get('SUPABASE_URL')!,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,{auth:{autoRefreshToken:false,persistSession:false}})
+export async function issueSession(client:ReturnType<typeof admin>,email:string){const {data:link,error}=await client.auth.admin.generateLink({type:'magiclink',email});if(error)throw error;const {data,error}=await client.auth.verifyOtp({token_hash:link.properties.hashed_token,type:'magiclink'});if(error||!data.session)throw error??new Error('session_failed');return{access_token:data.session.access_token,refresh_token:data.session.refresh_token}}

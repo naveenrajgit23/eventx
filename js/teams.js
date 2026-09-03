@@ -1,0 +1,3 @@
+import {supabase,requireConfiguration} from './supabase.js'
+export async function listTeams(eventId,search=''){requireConfiguration();let q=supabase.from('teams').select('id,team_name,team_code,phone_number,created_at,round_teams(qualified,rounds(round_number))').eq('event_id',eventId).order('team_code');if(search)q=q.or(`team_name.ilike.%${search}%,team_code.ilike.%${search}%`);const {data,error}=await q;if(error)throw error;return data}
+export async function currentTeam(){requireConfiguration();const {data,error}=await supabase.from('teams').select('*,events(event_name,event_code,point_format,status,rounds(round_number,status,result_announced))').eq('auth_user_id',(await supabase.auth.getUser()).data.user.id).single();if(error)throw error;return data}
