@@ -1,11 +1,13 @@
-[functions.register-team]
-verify_jwt = false
+project_id = "hdwxbqnhnjjjywgvrfgt"
 
-[functions.participant-login]
+[functions.coordinator-register]
 verify_jwt = false
 
 [functions.coordinator-login]
 verify_jwt = false
 
-[functions.coordinator-register]
+[functions.register-team]
+verify_jwt = false
+
+[functions.participant-login]
 verify_jwt = false
