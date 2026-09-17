@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {minutesToSeconds,secondsToDisplayTime,calculateRoboRaceScore,calculateDroneRaceScore} from '../js/scoring.js';
+import {minutesToSeconds,secondsToDisplayTime,calculateRoboRaceScore,calculateDroneRaceScore} from '../scoring.js';
 
 describe('competition time',()=>{
   it('parses minutes.seconds',()=>{

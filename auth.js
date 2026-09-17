@@ -1,4 +1,4 @@
-import {supabase,requireConfiguration} from './supabase.js'
+﻿import {supabase,requireConfiguration} from './supabase.js'
 
 function persistRole(role){
   if(!role)return;
@@ -127,7 +127,7 @@ export async function requireRole(role){
 
   if(!session||!session.user){
     console.log(LOG,'no session, redirecting to login');
-    location.href=role==='coordinator'?'/pages/coordinator-login.html':'/pages/participant-login.html';
+    location.href=role==='coordinator'?'/coordinator-login.html':'/participant-login.html';
     return null;
   }
 
@@ -137,7 +137,7 @@ export async function requireRole(role){
 
   if(userRole && userRole !== role){
     console.log(LOG,'role mismatch, redirecting');
-    location.href=role==='coordinator'?'/pages/coordinator-login.html':'/pages/participant-login.html';
+    location.href=role==='coordinator'?'/coordinator-login.html':'/participant-login.html';
     return null;
   }
 

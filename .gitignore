@@ -1,5 +1,9 @@
 node_modules/
 dist/
+deploy/
+.vite/
+.vite-temp/
+.cache/
 .env
 .env.local
 .env.*.local
