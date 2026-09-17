@@ -62,18 +62,23 @@ Deno.serve(async req => {
     console.error(error)
     if (userId) await admin().auth.admin.deleteUser(userId)
     if (teamId && !userId) await admin().from('teams').delete().eq('id', teamId)
-    const message =
-      error instanceof Error && error.message.includes('event_code_not_found')
-        ? 'Event code not found.'
-        : error instanceof Error && error.message.includes('team_name_already_registered')
-        ? 'That team name is already registered for this event.'
-        : error instanceof Error && error.message.includes('invalid_team_name')
-        ? 'Team name must be between 2 and 120 characters.'
-        : error instanceof Error && error.message.includes('invalid_phone')
-        ? 'Phone number must be between 7 and 20 characters.'
-        : error instanceof Error && error.message.toLowerCase().includes('duplicate')
-        ? 'That team is already registered.'
-        : 'Team registration could not be completed.'
+
+    // Errors from supabase.rpc()/postgrest are plain {message,details,code}
+    // objects, not Error instances — read .message off either shape.
+    const rawMessage =
+      (error && typeof error === 'object' && 'message' in error ? String((error as { message: unknown }).message) : String(error)) ?? ''
+
+    const message = /team name is required/i.test(rawMessage)
+      ? 'Team name is required.'
+      : /invalid event code or registration is closed/i.test(rawMessage)
+      ? 'Event code not found or registration is closed.'
+      : /team name already registered/i.test(rawMessage)
+      ? 'That team name is already registered for this event.'
+      : /teams_team_code_key/i.test(rawMessage)
+      ? 'Could not generate a unique team code — please try again.'
+      : /duplicate/i.test(rawMessage)
+      ? 'That team is already registered.'
+      : 'Team registration could not be completed.'
     return json({ error: message }, 400)
   }
 })
