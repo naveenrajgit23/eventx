@@ -1,4 +1,4 @@
-﻿import {publicNav,coordinatorShell,participantShell,images,skeleton,empty,toast,confirmDialog,wireCommon} from './components.js'
+import {publicNav,coordinatorShell,participantShell,images,skeleton,empty,toast,confirmDialog,wireCommon} from './components.js'
 import {qs,qsa,escapeHtml,formatDate,getCurrentEventId,setBusy,statusClass,statusLabel} from './utils.js'
 import {friendlyError,isConfigured} from './supabase.js'
 import {supabase} from './supabase.js'
@@ -210,8 +210,15 @@ async function renderParticipant(){
       `;
 
     }catch(error){
-      if(isAuto)console.error('[EventX] live sync tick failed',error);
-      if(!isAuto){
+      if(isAuto){
+        console.error('[EventX] live sync tick failed',error);
+        // If the session is no longer valid, stop the polling interval and redirect.
+        if(error?.message==='not_authorized'||error?.message?.includes('not_authorized')){
+          if(participantTimer){clearInterval(participantTimer);participantTimer=null}
+          location.href='/participant-login.html';
+          return;
+        }
+      } else {
         qs('#participant-content').innerHTML=empty('Could not load your dashboard',friendlyError(error));
       }
     }

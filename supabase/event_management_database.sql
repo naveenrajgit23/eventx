@@ -933,19 +933,28 @@ BEGIN
 
         (
             v_event_id,
-            'hand_touch',
-            'Hand Touch',
+            'out_of_line',
+            'Out of Line',
             'penalty',
-            3,
+            5,
             'add'
         ),
 
         (
             v_event_id,
             'completely_bot_exit',
-            'Completely Bot Exit',
+            'Complete Bot Exit',
             'penalty',
-            5,
+            20,
+            'add'
+        ),
+
+        (
+            v_event_id,
+            'hand_touch',
+            'Hand Touch',
+            'penalty',
+            10,
             'add'
         ),
 
@@ -954,7 +963,7 @@ BEGIN
             'obstacle_skip',
             'Obstacle Skip',
             'penalty',
-            10,
+            25,
             'add'
         );
 

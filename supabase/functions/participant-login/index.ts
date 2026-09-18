@@ -23,10 +23,21 @@ Deno.serve(async req => {
 
     const { data: team, error: teamError } = await client
       .from('teams')
-      .select('id,team_name,team_code')
+      .select('id,team_name,team_code,event_id')
       .eq('user_id', userId)
       .single()
     if (teamError || !team) throw teamError ?? new Error('team_not_found')
+
+    // Ensure team_id is always present in user_metadata so the client-side
+    // getParticipantPayload() can read it from the JWT on every login.
+    await client.auth.admin.updateUserById(userId, {
+      user_metadata: {
+        ...userResult.user.user_metadata,
+        role: 'participant',
+        team_id: team.id,
+        event_id: team.event_id,
+      },
+    })
 
     const session = await issueSession(userResult.user.email)
     await recordParticipantSession(team.id, session.refresh_token)
