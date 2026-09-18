@@ -82,9 +82,21 @@ describe('Robo Race scores',()=>{
 
 // ---------------------------------------------------------------------------
 // Drone Race scoring — must be UNCHANGED
+// Drone Race scoring — new rubric
 // ---------------------------------------------------------------------------
 describe('Drone Race scores',()=>{
   it('calculates Drone Race example',()=>
     expect(calculateDroneRaceScore({total_time:'5.00',ground_touch:2,obstacle_hit:1,obstacle_miss:1,perfect_landing:1}).finalScoreSeconds).toBe(314)
   );
+  it('calculates Drone Race with new rubric',()=>{
+    const result=calculateDroneRaceScore({
+      total_time:'5.00',
+      ground_touch:2,
+      obstacle_hit:1,
+      obstacle_miss:1,
+      hand_touch:1,
+      landing_miss:1
+    });
+    expect(result.finalScoreSeconds).toBe(332);
+  });
 });

@@ -220,6 +220,11 @@ BEGIN
             'bonus',
             1,
             'subtract'
+            'hand_touch',
+            'Hand Touch',
+            'penalty',
+            5,
+            'add'
         ),
 
         (
@@ -229,6 +234,11 @@ BEGIN
             'bonus',
             8,
             'subtract'
+            'landing_miss',
+            'Landing Miss',
+            'penalty',
+            5,
+            'add'
         );
 
     END IF;
